@@ -3,13 +3,45 @@ import os
 import msprime
 import timeit
 
+# Start timer for the script
 start = timeit.default_timer()
 
-def my_simulator( s_samplesSize, s_Ne, s_lenght, s_mutationRate, s_fileName, s_recombinationRate=0):
+if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+        
+	print '''
+        
+	Simulated genomes using msprime
+        Sarai Reyes
+        sarai.reyes.av@gmail.com
+	
+	Description:
+	This function will generate simulated genomes based on a coalescent model. 
+	It is using the module msprime, more infomration about msprime can be found it here: https://msprime.readthedocs.io/en/stable/
+	
+	
+	Usage/Input:
+        python simulatedGenomes_msprime.py --help 
+        python3.8 FrequencyNucleotidesInBamFiles.py [reference.fasta] [mapFile.bam] [sample name]
+        
+	Output:
+	The following outputs are genaretd by default but you can choose no generate them
+	1. Print th coalescemt trees in the screen
+	2. Simulated genomes in vcf file format
+	3. Simulated genomes in fasta file format
+	
+	##### HAVENT FINISHED
+	
+	'''
+        exit(0)
+
+def my_simulator( s_samplesSize, s_Ne, s_lenght, s_mutationRate, s_fileName, s_recombinationRate=0, ):
     """
-    This function will generate the genome simulations usign msprime
+    This function will generate the genome simulations using msprime
+    Input:
+    
     """
     print("We start to process your sample: " + s_fileName)
+    # Main line generating the simulation
     simulatedSequences = msprime.simulate(sample_size=s_samplesSize, Ne=s_Ne, length=s_lenght, mutation_rate=s_mutationRate, recombination_rate=s_recombinationRate)
     print("The simulation of your sample " + s_fileName + " IS FINISHED!")
     
@@ -17,10 +49,12 @@ def my_simulator( s_samplesSize, s_Ne, s_lenght, s_mutationRate, s_fileName, s_r
     #treeSimulations = simulatedSequences.first()
     #print(treeSimulations.draw(format="unicode"))
     
+    # Print the simulation in a vcf file format
     print("Writing down vcf format of sample " + s_fileName)
     with open("./simulationsFiles/"+s_fileName+".vcf", "w") as vcf_file:
         simulatedSequences.write_vcf(vcf_file)
     
+    # Print the simulation in a fasta file format
     #print("Writing down fasta format of sample " + s_fileName)
     #with open("./simulationsFiles/"+s_fileName+".fasta", "w") as fasta_file:
      #   simulatedSequences.write_fasta(fasta_file)
